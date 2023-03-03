@@ -1,7 +1,8 @@
 import { Alchemy, Network } from 'alchemy-sdk';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,createContext, useContext } from 'react';
 
 import './App.css';
+import SelectBlock from './components/SelectBlock';
 
 // Refer to the README doc for more information about using API
 // keys in client-side code. You should never do this in production
@@ -19,18 +20,17 @@ const settings = {
 //   https://docs.alchemy.com/reference/alchemy-sdk-api-surface-overview#api-surface
 const alchemy = new Alchemy(settings);
 
+ export const AlchemyContext = createContext(null);
+
 function App() {
-  const [blockNumber, setBlockNumber] = useState();
 
-  useEffect(() => {
-    async function getBlockNumber() {
-      setBlockNumber(await alchemy.core.getBlockNumber());
-    }
 
-    getBlockNumber();
-  });
+  return <div className="App">
+    <AlchemyContext.Provider value={alchemy}>
+      <SelectBlock />
+    </AlchemyContext.Provider>
+    </div>;
 
-  return <div className="App">Block Number: {blockNumber}</div>;
 }
 
 export default App;
